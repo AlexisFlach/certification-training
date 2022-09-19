@@ -1,0 +1,447 @@
+### Study notes
+
+###### Certificate
+
+https://www.cncf.io/certification/kcna/
+
+###### Notes based on
+
+https://www.youtube.com/watch?v=AplluksKvzI&ab_channel=freeCodeCamp.org
+
+
+#### Sections
+
+1. What is Cloud Native?
+
+Cloud-native describes an architectural approach that emphasized application workloads that are portable, modular and isolate, between different cloud deployment model and Cloud Service Providers.
+
+Some describe it being 4 key principles:
+1. Microservices
+2. Containerization
+3. CD
+4. DevOps
+
+CNFS:
+
+Cloud Native Techs empower organizations to build and run scalable apps in modern, dynamic, environments, such as public, private and hybrid clouds. Containers, services, meshes, microservices, immutable infrastructure, and declarative APIs exemplify this approach. 
+
+These techs enable loosely coupled systems that are resilient, manageable and observable.
+
+Combined with robust automation, they allow engineers, to make high impact changes, frequently and predictably with minimal toll.
+
+I think modern techs in combination with portability.
+
+
+2. Cloud Native vs Cloud Service Provider
+
+CSP: 
+
+- a collection of cloud services
+- strong application integration and synergies between services
+- utilizing metered billing
+- under a single unified API
+
+AWS, Azure, Google Cloud etc
+
+CN:
+
+- a workload, application or system, that is designed to run on cloud services, and "takes advantage of cloud offerings".
+
+
+
+AWS, Azure, Google Cloud etc
+
+CN:
+
+- a workload, application or system, that is designed to run on cloud services, and "takes advantage of cloud offerings".
+
+
+
+AWS, Azure, Google Cloud etc
+
+CN:
+
+- a workload, application or system, that is designed to run on cloud services, and "takes advantage of cloud offerings".
+
+
+
+AWS, Azure, Google Cloud etc
+
+CN:
+
+- a workload, application or system, that is designed to run on cloud services, and "takes advantage of cloud offerings".
+
+3. Cloud Native Shared Responsibility Model
+
+GitOps...
+
+4. The Linux Foundation
+
+5. Cloud Native Computing Foundation
+
+A Linux Foundation project to help advance container technology
+
+6. Cloud Native Landscape
+
+landscape.cncf.io
+
+7. Cloud Native Trail Map
+
+The CNs recommended path to adopting Cloud-Native architecture
+
+1. Containerization
+2. CI/CD
+3. Orchestration
+4. Observability and Analysis
+5. Service Proxy, Discovery, Mesh
+6. Networking Policy, and Security
+7. Distributed Databases and Storage
+8. Streaming and Messaging
+9. Container Registry and Runtime
+10. Software distributuion
+
+8. Vms vs Containers
+
+VM: EC2 Instance
+
+VMs do not make the best use of space. Apps are not isolated which could cause config conflics, security problems or resource hogging.
+
+Containers allow you to run multiple apps which are virtually isolated from each other. Launch new containers and config os dependencies per container.
+
+9. Microservices
+
+Monolithic Architecture
+One app is responsible for everything. Functionality is tightly coupled.
+
+Ms Architecture
+Multiple apps which are each responsible for one thing. Functionality is isolate and stateless.
+
+10. Kubernetes
+
+An open-source container orchestation system for automating deployment, scaling and management of containers.
+
+Maintained by CNCF.
+
+(over-simplified) The advantage over Docker is the ability to run "container apps" distributed acress multiple VMs.
+
+A unique component of K8s is Pods. A pod is a group of one or more containers with shared storage, network resources and other shared settings.
+
+K8s are ideal for ms architecture.
+
+11. K8s Components Overview
+
+- Cluster
+A logical grouping of all components within a cluster.
+
+- Namespace
+A named logical grouping of K8s components within a cluster.
+Used to isolate different workloads on the same cluster.
+
+A slice of pie.
+
+- Node
+A virtual machine or underlying server. There are two types of node: Control Plane and Worker Nodes. Worker nodes is where the application or workloads run. CP nodes manage worker nodes.
+
+- Pod
+The smallest unit in K8s. An abstraction over a container.
+Generally defines an app workload.
+
+- Service
+Something we use with a pod to give it a static IP adress and DNS name for a set of pods(persists an ip address if a pod dies) and a load balancer.
+
+- Ingress
+Translates HTTP/S rules to point to services. Often used for getting an external load balancer to route trafic to our pods.
+
+- API Server
+Allows users to interact with K8s components using the KubeCTL or by sending HTTP/S requests. 
+
+- Kubelet
+An agent installed on all nodes. Kubelet allows users to interact wuth node via the API server and Kubectl.
+
+- Kubectl
+CLI that allows users to interact with the cluster and components via the API server.
+
+- Cloud Controller Manager
+Allows you to link a Cloud Service Provider (AWS, Azure) to leverage cloud services.
+
+- Controller Manager
+A controll loop that watches the state of the cluster and will change the current state back to desired state.
+
+- Scheduler
+Determines where to place pods on nodes. Places them in a scheduling queue.
+
+- Kube Proxy
+An application on worker nodes that provides routing and filtering rules for ingress(incoming trafic) to pods.
+
+- Network policy
+Acts a virtual firewall at the namespace-level or pod-level.
+
+- ConfigMap
+Allows you to decouple environment-specific configuration from your container images, so that your applications are easily portable. Used to store non-confidential data in key-value pairs. Application configuration details.
+
+- Secret
+Small amount of sensitive data such as a password, a token or a key. Basically ConfigMap
+encrypted.
+
+- Volumes
+Mounting storage eg. locally on the node, or remote to cloud storage.
+
+- StatefulSet (not included in the course, vey hard)
+provides guarantees about the ordering and uniqueness of these Pods
+Think of dbs where your have to determine read and writes order or limit the amout of containers.
+
+- ReplicaSets
+Maintain a stable set of replica pods running at a given time. Can provide a guarentee of availability.
+
+- Deployment
+A blueprint for a pod (Launch template)
+
+11. Manifest Files in K8s
+
+Manifest(non-technical): A Manifest file is a document that is commonly used for customs to list the contents of cargo, or passengers. Itemized list of things.
+
+In context of K8s, a Manifest file is a generelized name for any k8s configuration file that define the configuration of various k8s components.
+
+- Deployment file
+- PodSpec file
+- Network Policy file
+
+Could be written in YAML or JSON, but most common is YAML.
+
+A manifest can contain mulitple K8s component definitions/configurations:
+
+```YAML
+---
+```
+
+kubectl apply command is generally used to deploy manifest files
+
+```bash
+kubectl apply -f resources.yaml
+```
+
+Resource Configuration file is sometimes used to describe multiple resources in a manifest.
+
+12. Control Plane and Worker Nodes
+
+CPN: Formally known as Master Node. Manages processes like scheduling, restarting nodes..
+
+WN: Does the work, running your app in pods and containers.
+
+What is in the Control Plane:
+
+API Server: the backbone of communication
+Scheduler: determines where to start a pod on worker node
+Controller Manager: detect state changes(if pod crashed, restart it)
+etcd: a key/value Store that stores the state of the cluster.
+Kubelet: Allows user to interact with the node via Kunbectl.
+CoreDNS: 
+
+The worker nodes runs:
+Kubelet
+Kube Proxy
+Container Runtime
+Pods and Containers
+
+Why are there a proxy?
+
+Proxy is what is is used when you have incoming trafic.
+ADD MORE LATER.
+
+13. Pods
+
+Pods are the smallest unit in K8s. Pods abstract away the container layer so you can directly interact with the K8s Layer.
+
+A pod is intended to run one application in multiple containers
+	- DB pod
+	- Job pod
+	- frontend app pod
+	- backend app pod
+You can run multiple apps inside one pod but those containers will be tightly dependent.
+
+Each pod gets its own private ip address
+ - containers will run on different ports
+ - containers can talk to eachother on localhost
+
+
+Each pod can have a shared storage volume attached
+ - all containers will share the same volume
+
+When the last remaining container dies in a pod, so does the pod.
+ When a replacement pod is created, the pod will habe in ip address assigned.
+ The ip address will be Ephermal(temporary) for pods, they dont by default persist.That is why we will need K8s services.
+
+k get pod -o wide
+
+14. API Server
+
+The core of K8s control plane is the API Server.
+The API server exposes an HTTP API that lets end users, different parts of your cluster, and external components commnunicate with one another.
+
+The K8s API lets you query and manipulate the state of API objects in K8s(pods, namespaces, ConfigMAps, and events)
+
+The API server is a component of the K8s control plane that exposes the K8s API. The API server is the front end for the k8s control plane.
+
+The main implementaion of a k8s server is kube-apiserver. kube-apiserver is designed to scale horizontally, it scales by deploying more instances.
+
+You can run several instances of kube-apiserver and balance traffic between those instances.
+
+Everything has to go through the api server.
+
+You can interact with the API server in three ways:
+
+- UI
+- API
+- CLI: kubeCTL
+
+15. Deployment
+
+A deployment provides declerative updates for Pods and ReplicaSets.
+
+The default Deployment Controller can be swapped out for other deployment tools:
+Argo, Flux, Jenkin X...
+
+Deployment is built-in so you dont have to use a 3rd party tool, but generally you want to because the tool is limited. 
+
+In reality, a deployment is alwats deploying a replicaSet.
+
+A deployment define the desired state of ReplicaSets and Pods. 
+A deployment will create and manage a ReplicaSet.
+A replicaset will manage the replicas of pods.
+
+16. Replica Set
+
+RS is a way to maintain a desired amount of redundant pods(replicas) to provide a guarantee of availability.
+
+The pod field metadata.ownerReference determines the link from a pod to a ReplicaSet.
+
+It is not recommended to directly create replicaSets. Instead a deployment can create and manage a ReplicaSet for you.  
+
+17. Stateless vs Stateful
+
+Very important concept. 
+
+Stateless: 
+- Every request does not care (forgets) about previous or current state.
+- Web-apps that store sessions outside of the web-apps virtual machine(database or cookies) will be stateless web-apps
+- ReplicaSets
+
+Stateful: 
+- Every request relies on state data(remembers). All databases are stateful. 
+- Monolithic web-apps that store session data in memory on a vm are Stateful.
+- StatefulSets
+
+16. Stateful Sets
+
+For dbs, instead use managed service.
+
+Used when you need trafic to be sent to specific pods.
+
+...
+
+17. Namespaces
+
+A Namespace is a way to logically isolate resources within a K8s cluster.
+Namespaces can be organized based on project, department or any user-defined grouping.
+
+```
+kubectl get namespace
+```
+
+Kubernetes starts with 4 default namespaces:
+
+1. default
+The default namespace where all our pods and services run unless a namespace is specified.
+2. kube-public
+For resources that are publicly visible and readable
+3. kube-system
+The system namespace that stores objects created by K8s System
+Engineers deploying applications are not supposed to touch this namespace
+4. kube-node-lease
+Holds lease objects associated with each node. Used to detact node failures by sending heartbeats.
+
+You can create your own namespaces
+
+```
+kubectl create namespace prod
+```
+
+In clusters with a small amount of resources, Namespaces aren't really necessary.
+
+Names of resources need to be unique withing a namespace, but not across namespaces.
+Namespace-based scoping is applicable only for namespaces objects eg Deployments, Services... but not for cluster-wide objects eg StorageClass, Nodes, PersistentVolumes....
+
+
+Single-Namespace Objects
+ConfigMaps and Secrets can't be shared across namespaces
+
+Multi-Namespace Objects
+A Service and Pods can belong to multiple namespaces
+
+Cluster-Wide Objects
+Volumes and Nodes can't be bound to namespace since they are global.
+
+You can apply system quota restrictions on a namespace to avoid overuse eg Mem, compute..
+
+If you don't provide a namespace for a component it will end up in the default namespace.1o
+
+
+18. In-Tree vs Out-of-Tree
+
+In Cloud Native projecs you will hear the terms "In-Tree" and "Out-of-Tree". 
+
+In-Tree:
+Think of In-Tree as Internal Plugins. Things that come by default with the project.
+Plugins, components or functionality that are provided by default and/or reside in the main repository.
+
+
+Out-of-Tree:
+
+Plugins, components and functionality that must be installed manually, and extends or replaces the default behavior.
+Think of Out-of-Tree as external plugins.
+
+There are however different kinds of explenations to the terms, this is only a way to contextualize them.
+
+19. Endpoints and Endpoint Slices
+
+Endpoints track the IP Addresses of the pods assigned to a K8s Service.
+When a service selector matches a pod label, the pod IP Address is added to the pool of endoints.
+Pods expose themselves to services via endpoints.
+
+So services are used to loabalance to multiple pods. They link to multiple pods via endpoints.
+Each Pod has a dynamical IP Address. The idea is that these ip addresses are stored in endpoint which exists in a Endpoints pool. Basically, the connection between services and pods.
+
+```
+kubectl get endpoints
+```
+
+Endpoint Slices break up Endpoints into smaller manageable segments. Each Endpoint Slice has a limit of 100 pods. 
+
+
+20. Jobs and Cron Jobs
+
+First of all, what is a Background-job?
+A one-off task that is used to run a piece of code.
+Commonly used to perform mainenance or to trigger a computational workload.
+EG. Back up the db every x minute, Delete all users who have not confirmed their email.
+
+A Job creates one or more Pods and will continue to retry execution of the Pods until a specified number of them successfullt terminate.
+
+```
+kubectl create job hello --image=busybox -- echo "Hello World"
+```
+
+A CronJob is a job that executes based on repeating schedule.
+
+```
+kubectl create cronjob hello --image=busybox --schedule="*/1 * * * *" echo "Hello World"
+```
+
+A common usecase for a cronjob is sending out emails.
+
+21. Kubernetes Dashboard
+
+K8s Dashboard is an open-source application you can deploy to your cluster to provide a UI to view K8s components. 
+
+
+22. Selectors

@@ -339,8 +339,120 @@ terraform workspace list
 
 We need to define a backend.
 
-1.59.19
+#### Terraform Provisioner
+
+Terraform Provisioners install software, edit files, and provisions machines created with Terraform.
+
+T allows you to work with two different provisioners:
+
+Cloud-Init
+
+Packer
+
+Provisioners should only be used as a last resort.
+
+21. Local-Exec
+
+Local env could be:
+- local machine
+- build server
+- terraform cloud
 
 
+Local-exec allows you to execute local commands after a resource i provisioned.
+
+local exec allows you to run any arbitrary commands on your local machine. Commonly used to trigger Configuration Management, eg Ansible.
+
+```
+resource "aws_instance" "web" {
+	provisioner "local-exec" {
+		command = "echo ${self.private_ip} >> private_ips.txt"
+	}
+}
+```
+
+command (required): The command you want to execute
+
+working_dir: Where the command will be executed
+
+interpreter: The entrypoint for the command (Bash, Ruby, ASW CLI)
+
+Environment: 
+
+key/value pairs of env variables.
+
+22. Remote-exec
+
+Remote-exec allows you wo execute commands on a target resource after a resource is provisioned.
+
+Local Machine executing Terraform -> Provisioned VM (resource) executing provided commands/scripts
+
+Remote Command has three different modes:
+
+Inline - list of command strings
+
+Script - relative or absolute local script that will be copied to the remote resource and then executed.
+
+Scripts: relative or absolute local script that will be copied to the remote resource and then executed and exected in order.
+
+You can only choose to use one mode at a time.
+
+23. File
+
+file provisioner is used to copy files or directories from our local machine to the newly created resource.
+
+```
+resource "aws_instance" "web" {
+
+	provisioner "file" {
+		source = "conf/myapp.conf"
+		destination = "/etc/myapp.conf
+	}
+...
+```
+
+Source: the local file we want to upload to the remote machine
+Content: a file or folder
+Destination: Where you want to upload the file on the remote machine
+
+You may require a connection block within the provisioner for auth.
+
+24. Connection
+
+A connection block tells a provisioner or resource how to establish a connection.
+
+25. Null Resources
+
+null_resource is a placeholder for resources that have no specific association to a provider resources.
+
+You can provide a connection and trigger to a resource. Triggers is a map of values which should cause this set of provisioner to re-run.
+
+Values are meant to be interpolated references to variables or attributes of other resources.
+
+26. Cloud-Init
+
+null_resource is a placeholder for resources that have no specific association to a provider resources.
+
+You can provide a connection and trigger to a resource. Triggers is a map of values which should cause this set of provisioner to re-run.
+
+Values are meant to be interpolated references to variables or attributes of other resources.
+
+26. Cloud-Init
+
+null_resource is a placeholder for resources that have no specific association to a provider resources.
+
+You can provide a connection and trigger to a resource. Triggers is a map of values which should cause this set of provisioner to re-run.
+
+Values are meant to be interpolated references to variables or attributes of other resources.
+
+26. Cloud-Init
 
 
+#### Terraform Providers
+
+Providers are Terraform plugins that allow you to interact with:
+- CSP
+- Saas: Github, stripe etc
+- Other APIS: K8s, postgres etc
+
+Providers 
